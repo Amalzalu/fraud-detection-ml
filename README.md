@@ -33,7 +33,22 @@ Data Loading → Cleaning → EDA → Feature/Target Split → Train/Test Split 
 - Deliberately did NOT remove outliers, since fraud transactions are inherently statistical outliers
 
 ## Exploratory Data Analysis
-[Insert your 5 key plots here as images — export them from your notebook using `plt.savefig('../images/plot_name.png')`]
+### Class Distribution
+![Transaction class distribution](images/class_distribution.png)
+
+### Transaction Amount Distribution
+![Distribution of transaction amount](images/amount_distribution.png)
+
+### Transaction Amount: Legitimate vs Fraud
+![Box plot of transaction amount by class](images/amount_by_class_boxplot.png)
+
+### Transaction Time: Legitimate vs Fraud
+![Transaction time distribution by class](images/time_distribution_by_class.png)
+
+### Feature Correlation Heatmap
+![Feature correlation heatmap](images/correlation_heatmap.png)
+
+**Observations:**
 - Class distribution confirms severe imbalance
 - Fraud transactions skew toward smaller amounts
 - Fraud and legitimate transactions show different `Time` distributions, justifying keeping `Time` as a feature
@@ -71,10 +86,12 @@ Accuracy alone is misleading on this dataset — a model predicting "legitimate"
 | LDA | 0.9889 | 0.1092 | 0.7895 | 0.1918 | 0.9514 | 0.2857 |
 
 ## Confusion Matrices
-[Insert your normalized confusion matrix heatmap image here]
+![Confusion matrices for Logistic Regression, KNN and LDA](images/confusion_matrices.png)
+
+Rows are the actual class and columns are the predicted class. Logistic Regression catches the most fraud (83 of 95), but also raises the most false alarms (1,482). KNN raises far fewer false alarms (97) but misses more fraud (18 of 95).
 
 ## ROC Curve
-[Insert your ROC curve comparison plot here]
+![ROC curve comparison](images/roc_curve_comparison.png)
 
 ## Key Findings
 - **Accuracy is a misleading metric on imbalanced fraud data** — all three models exceed 97% accuracy, but their real fraud-catching ability varies drastically.
@@ -88,24 +105,25 @@ Accuracy alone is misleading on this dataset — a model predicting "legitimate"
 
 1. Clone this repository
 2. Create a virtual environment: `python -m venv venv`
-3. Activate it: `venv\Scripts\activate` (Windows)
-4. Install dependencies: `pip install -r requirements.txt`
+3. Activate it: `venv\Scripts\activate` (Windows) or `source venv/bin/activate` (macOS/Linux)
+4. Install dependencies: `pip install -r requirements.txt` (Windows)
+   - On macOS/Linux, `requirements.txt` includes a Windows-only package (`pywinpty`), so install the core packages instead:
+     `pip install pandas numpy scikit-learn==1.9.0 imbalanced-learn matplotlib seaborn streamlit joblib notebook ipykernel`
 5. Download the dataset from [Kaggle](https://www.kaggle.com/mlg-ulb/creditcardfraud) and place `creditcard.csv` in `data/`
 6. Run notebooks in `notebooks/` in order to reproduce the analysis and train models
 7. Launch the demo app: `cd app && streamlit run app.py`
 
 ## Project Structure
-\```
+```text
 fraud-detection-ml/
 ├── data/               # Dataset (not committed - see How to Run)
 ├── notebooks/          # EDA and model development notebooks
-├── src/                # Reusable scripts
 ├── models/             # Saved model and scaler (.pkl)
 ├── images/             # Saved plots for documentation
 ├── app/                # Streamlit application
 ├── requirements.txt
 └── README.md
-\```
+```
 
 ## Future Improvements
 - Tune the Logistic Regression decision threshold to improve precision without excessive recall loss
